@@ -1,5 +1,4 @@
 ﻿using static Random_Console_App.Main.Constants;
-using System.Linq;
 
 namespace Random_Console_App.Main.Classes.Players
 {

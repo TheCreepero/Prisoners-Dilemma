@@ -2,21 +2,21 @@
 
 namespace Random_Console_App.Main.Classes.Players
 {
-    public class Traitor : Player
+    public class Collaborator : Player
     {
-        public Traitor(string name)
+        public Collaborator(string name)
         {
             PlayerName = name;
         }
 
         public override Choice MakeChoice()
         {
-            return Choice.Defect;
+            return Choice.Cooperate;
         }
 
         public override void ProcessResults(Result results)
         {
-            //Nothing here
+            //Nothing
         }
     }
 }

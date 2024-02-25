@@ -1,91 +1,18 @@
 ﻿using Random_Console_App.Main.Classes;
 using Random_Console_App.Main.Visuals;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Security.Cryptography.X509Certificates;
-using System.Text;
 using System.Text.Json;
-using System.Threading.Tasks;
-using static Random_Console_App.Main.Constants;
 
 namespace Random_Console_App.Main.Services
 {
     public class GameService
     {
-        private readonly int NumberOfRounds;
         private readonly int DelayBetweenRounds;
+        private readonly int NumberOfRounds;
 
         public GameService(int rounds = 10, int delay = 500)
         {
             NumberOfRounds = rounds;
             DelayBetweenRounds = delay;
-        }
-
-        private void ProcessResultsDirector(Player player1, Player player2, Result results)
-        {
-            player1.ProcessResults(results);
-            player2.ProcessResults(results);
-        }
-
-        public async Task PlayMatch(Player player1, Player player2)
-        {
-            GameDisplay.DisplayMatchStart(player1, player2);
-
-            List<Result> results = await PlayRounds(player1, player2);
-
-            GameResult gameResult = new GameResult
-            {
-                Info = new GameInfo
-                {
-                    Player1Name = player1.PlayerName,
-                    Player2Name = player2.PlayerName,
-                    Player1Type = player1.GetType().Name,
-                    Player2Type = player2.GetType().Name,
-                }
-            };
-
-            var (player1FinalScore, player2FinalScore) = GetWinner(results, player1, player2);
-            GameDisplay.DisplayMatchEnd();
-
-            gameResult.Results = results;
-            gameResult.Player1FinalScore = player1FinalScore;
-            gameResult.Player2FinalScore = player2FinalScore;
-
-            await SaveResults(gameResult);
-        }
-
-        private async Task<List<Result>> PlayRounds(Player player1, Player player2)
-        {
-            List<Result> results = new List<Result>();
-
-            for (int i = 0; i < NumberOfRounds; i++)
-            {
-                GameDisplay.DisplayRoundStart(i);
-
-                Result roundResult = PlayRound(player1, player2, i);
-                results.Add(roundResult);
-
-                ProcessResultsDirector(player1, player2, roundResult);
-                GameDisplay.DisplayRoundEnd();
-
-                await Task.Delay(DelayBetweenRounds);
-            }
-
-            return results;
-        }
-
-        private Result PlayRound(Player player1, Player player2, int roundNumber)
-        {
-            player1.Choice = player1.MakeChoice();
-            player2.Choice = player2.MakeChoice();
-
-            GameDisplay.DisplayChoices(player1, player2);
-
-            Result roundResult = new Result(roundNumber, player1.Choice, player2.Choice);
-            roundResult.CalculateScore();
-
-            return roundResult;
         }
 
         public static (int player1FinalScore, int player2FinalScore) GetWinner(List<Result> results, Player player1, Player player2)
@@ -124,11 +51,8 @@ namespace Random_Console_App.Main.Services
 
         public static async Task SaveResults(GameResult gameResult)
         {
-            // Serialize the gameResult to JSON
             var options = new JsonSerializerOptions { WriteIndented = true };
             string json = JsonSerializer.Serialize(gameResult, options);
-
-            // Get the base directory of the app
             string baseDir = AppDomain.CurrentDomain.BaseDirectory;
 
             // Create a directory for your results if it doesn't exist
@@ -143,6 +67,72 @@ namespace Random_Console_App.Main.Services
 
             // Write the JSON string to the file
             await File.WriteAllTextAsync(filePath, json);
+        }
+
+        public async Task PlayMatch(Player player1, Player player2)
+        {
+            GameDisplay.DisplayMatchStart(player1, player2);
+
+            List<Result> results = await PlayRounds(player1, player2);
+
+            GameResult gameResult = new GameResult
+            {
+                Info = new GameInfo
+                {
+                    Player1Name = player1.PlayerName,
+                    Player2Name = player2.PlayerName,
+                    Player1Type = player1.GetType().Name,
+                    Player2Type = player2.GetType().Name,
+                }
+            };
+
+            var (player1FinalScore, player2FinalScore) = GetWinner(results, player1, player2);
+            GameDisplay.DisplayMatchEnd();
+
+            gameResult.Results = results;
+            gameResult.Player1FinalScore = player1FinalScore;
+            gameResult.Player2FinalScore = player2FinalScore;
+
+            await SaveResults(gameResult);
+        }
+
+        private Result PlayRound(Player player1, Player player2, int roundNumber)
+        {
+            player1.Choice = player1.MakeChoice();
+            player2.Choice = player2.MakeChoice();
+
+            GameDisplay.DisplayChoices(player1, player2);
+
+            Result roundResult = new Result(roundNumber, player1.Choice, player2.Choice);
+            roundResult.CalculateScore();
+
+            return roundResult;
+        }
+
+        private async Task<List<Result>> PlayRounds(Player player1, Player player2)
+        {
+            List<Result> results = new List<Result>();
+
+            for (int i = 0; i < NumberOfRounds; i++)
+            {
+                GameDisplay.DisplayRoundStart(i);
+
+                Result roundResult = PlayRound(player1, player2, i);
+                results.Add(roundResult);
+
+                ProcessResultsDirector(player1, player2, roundResult);
+                GameDisplay.DisplayRoundEnd();
+
+                await Task.Delay(DelayBetweenRounds);
+            }
+
+            return results;
+        }
+
+        private void ProcessResultsDirector(Player player1, Player player2, Result results)
+        {
+            player1.ProcessResults(results);
+            player2.ProcessResults(results);
         }
     }
 }

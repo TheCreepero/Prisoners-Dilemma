@@ -1,9 +1,4 @@
 ﻿using Random_Console_App.Main.Classes;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Random_Console_App.Main
 {
@@ -28,6 +23,7 @@ namespace Random_Console_App.Main
         public static void DisplayRoundEnd()
         {
             Console.WriteLine("---END OF ROUND---");
+            Console.WriteLine();
         }
 
         public static void DisplayMatchEnd()
