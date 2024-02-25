@@ -14,7 +14,7 @@ namespace Random_Console_App.Main.Classes.Players
             return Choice.Defect;
         }
 
-        public override void ProcessResults(Result results)
+        public override void ProcessResults(Result results, Player otherPlayer)
         {
             //Nothing here
         }

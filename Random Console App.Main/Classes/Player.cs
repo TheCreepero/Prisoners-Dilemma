@@ -9,6 +9,6 @@ namespace Random_Console_App.Main.Classes
 
         public abstract Choice MakeChoice();
 
-        public abstract void ProcessResults(Result results);
+        public abstract void ProcessResults(Result results, Player otherPlayer);
     }
 }

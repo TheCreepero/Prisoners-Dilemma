@@ -131,8 +131,8 @@ namespace Random_Console_App.Main.Services
 
         private void ProcessResultsDirector(Player player1, Player player2, Result results)
         {
-            player1.ProcessResults(results);
-            player2.ProcessResults(results);
+            player1.ProcessResults(results, player2);
+            player2.ProcessResults(results, player1);
         }
     }
 }
