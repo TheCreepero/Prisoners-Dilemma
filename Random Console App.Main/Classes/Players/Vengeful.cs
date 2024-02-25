@@ -19,7 +19,7 @@ namespace Random_Console_App.Main.Classes.Players
             return Choice.Cooperate;
         }
 
-        public override void ProcessResults(Result results, Player otherPlayer)
+        public override void ProcessResults(Result results, Player otherPlayer, Player thisPlayer)
         {
             if (otherPlayer.Choice == Choice.Defect)
                 Revenge = true;

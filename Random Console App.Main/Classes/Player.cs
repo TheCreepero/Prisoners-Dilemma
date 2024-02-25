@@ -7,8 +7,10 @@ namespace Random_Console_App.Main.Classes
         public string PlayerName { get; set; }
         public Choice Choice { get; set; }
 
+        public int RoundScore { get; set; }
+
         public abstract Choice MakeChoice();
 
-        public abstract void ProcessResults(Result results, Player otherPlayer);
+        public abstract void ProcessResults(Result results, Player otherPlayer, Player thisPlayer);
     }
 }

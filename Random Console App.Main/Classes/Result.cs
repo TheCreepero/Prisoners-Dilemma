@@ -17,28 +17,33 @@ namespace Random_Console_App.Main.Classes
         public int Player1Score { get; set; }
         public int Player2Score { get; set; }
 
+        //Payoff T > R > P > S
         public void CalculateScore()
         {
             if (Player1Choice == Choice.Cooperate && Player2Choice == Choice.Cooperate)
             {
+                //Payoff R
                 Console.WriteLine("Both players cooperate! Each player gets 2 years in prison.");
                 Player1Score = 2;
                 Player2Score = 2;
             }
             else if (Player1Choice == Choice.Defect && Player2Choice == Choice.Defect)
             {
+                //Lower payoff P
                 Console.WriteLine("Both players defect! Each player gets 3 years in prison.");
                 Player1Score = 3;
                 Player2Score = 3;
             }
             else if (Player1Choice == Choice.Cooperate && Player2Choice == Choice.Defect)
             {
+                //P1 gets lowest payoff S, P2 gets highest payoff T
                 Console.WriteLine("Player 1 cooperates and Player 2 defects! Player 1 gets 5 years in prison and Player 2 goes free.");
                 Player1Score = 5;
                 Player2Score = 0;
             }
             else if (Player1Choice == Choice.Defect && Player2Choice == Choice.Cooperate)
             {
+                //P2 gets lowest payoff S, P1 gets highest payoff T
                 Console.WriteLine("Player 1 defects and Player 2 cooperates! Player 1 goes free and Player 2 gets 5 years in prison.");
                 Player1Score = 0;
                 Player2Score = 5;

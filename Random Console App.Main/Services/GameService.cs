@@ -8,11 +8,13 @@ namespace Random_Console_App.Main.Services
     {
         private readonly int DelayBetweenRounds;
         private readonly int NumberOfRounds;
+        private readonly NoiseService _noiseService;
 
-        public GameService(int rounds = 10, int delay = 500)
+        public GameService(int rounds = 10, int delay = 500, NoiseService noiseService = null)
         {
             NumberOfRounds = rounds;
             DelayBetweenRounds = delay;
+            _noiseService = noiseService;
         }
 
         public static (int player1FinalScore, int player2FinalScore) GetWinner(List<Result> results, Player player1, Player player2)
@@ -101,10 +103,19 @@ namespace Random_Console_App.Main.Services
             player1.Choice = player1.MakeChoice();
             player2.Choice = player2.MakeChoice();
 
+            if (_noiseService != null)
+            {
+                player1.Choice = _noiseService.AddNoise(player1);
+                player2.Choice = _noiseService.AddNoise(player2);
+            }
+
             GameDisplay.DisplayChoices(player1, player2);
 
             Result roundResult = new Result(roundNumber, player1.Choice, player2.Choice);
             roundResult.CalculateScore();
+
+            player1.RoundScore = roundResult.Player1Score;
+            player2.RoundScore = roundResult.Player2Score;
 
             return roundResult;
         }
@@ -131,8 +142,8 @@ namespace Random_Console_App.Main.Services
 
         private void ProcessResultsDirector(Player player1, Player player2, Result results)
         {
-            player1.ProcessResults(results, player2);
-            player2.ProcessResults(results, player1);
+            player1.ProcessResults(results, player2, player1);
+            player2.ProcessResults(results, player1, player2);
         }
     }
 }

@@ -7,14 +7,26 @@
             return Console.ReadLine() ?? "NULL";
         }
 
-        public static void GetProceedState()
+        public static void StartSimulation()
         {
-            Console.WriteLine("Do you want to proceed? Y/N");
+            Console.WriteLine("Press N to exit. Press any other key to start the simulation.");
             char input = Console.ReadKey().KeyChar;
             Console.WriteLine();
 
             if (input == 'N' || input == 'n')
                 RuntimeService.ExitGracefully();
+        }
+
+        public static bool RestartSimulation()
+        {
+            Console.WriteLine("Press N to exit. Press any other key to restart.");
+            char input = Console.ReadKey().KeyChar;
+
+            if (input == 'N' || input == 'n')
+            {
+                return false;
+            }
+            return true;
         }
 
         public static int GetIntegerInput(string prompt)

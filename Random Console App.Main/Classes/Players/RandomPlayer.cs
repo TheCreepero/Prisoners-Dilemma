@@ -19,7 +19,7 @@ namespace Random_Console_App.Main.Classes.Players
             return rand.NextDouble() < ChanceToCooperate ? Choice.Cooperate : Choice.Defect;
         }
 
-        public override void ProcessResults(Result results, Player otherPlayer)
+        public override void ProcessResults(Result results, Player otherPlayer, Player thisPlayer)
         {
             //Nothing
         }
