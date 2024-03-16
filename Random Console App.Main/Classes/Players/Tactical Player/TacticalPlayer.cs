@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using static Random_Console_App.Main.Constants;
+﻿using static Random_Console_App.Main.Constants;
+using Random_Console_App.Main.Services;
 
 namespace Random_Console_App.Main.Classes.Players.Tactical_Player
 {
@@ -22,121 +18,71 @@ namespace Random_Console_App.Main.Classes.Players.Tactical_Player
 
         public override Choice MakeChoice()
         {
-            if (RoundsWon > RoundsLost)
+            if (RoundResult.RoundsWon > RoundResult.RoundsLost)
             {
                 //Scene: Lost last round but has still won more than lost
                 if (!Won)
                 {
-                    if (LastChoice == Choice.Cooperate)
-                    {
-                        return Choice.Defect;
-                    }
-                    if (LastChoice == Choice.Defect)
-                    {
-                        return Choice.Cooperate;
-                    }
+                    return PlayerService.Opposite(RoundResult.RoundChoice);
                 }
 
                 //Scene: Tied last round and has won more than lost
                 if (!Won && Tied)
                 {
-                    return LastChoice;
+                    return RoundResult.RoundChoice;
                 }
                 
                 //Scene: Won last round and has won more than lost
                 if (Won)
                 {
-                    return LastChoice;
+                    return RoundResult.RoundChoice;
                 }
             }
-            else if (RoundsWon < RoundsLost)
+            else if (RoundResult.RoundsWon < RoundResult.RoundsLost)
             {
                 //Scene: Lost
                 if (!Won)
                 {
-                    if (LastChoice == Choice.Cooperate)
-                    {
-                        return Choice.Defect;
-                    }
-                    if (LastChoice == Choice.Defect)
-                    {
-                        return Choice.Cooperate;
-                    }
+                    return PlayerService.Opposite(RoundResult.RoundChoice);
                 }
 
                 //Scene: Tied
                 if (!Won && Tied)
                 {
-                    if (LastChoice == Choice.Cooperate)
-                    {
-                        return Choice.Defect;
-                    }
-                    if (LastChoice == Choice.Defect)
-                    {
-                        return Choice.Cooperate;
-                    }
+                    return PlayerService.Opposite(RoundResult.RoundChoice);
                 }
 
                 //Scene: Won
-                return LastChoice;
+                return RoundResult.RoundChoice;
             }
-            else if (RoundsLost == RoundsWon)
+            else if (RoundResult.RoundsLost == RoundResult.RoundsWon)
             {
                 //Scene: Lost
                 if (!Won)
                 {
-                    if (LastChoice == Choice.Cooperate)
-                    {
-                        return Choice.Defect;
-                    }
-                    if (LastChoice == Choice.Defect)
-                    {
-                        return Choice.Cooperate;
-                    }
+                    return PlayerService.Opposite(RoundResult.RoundChoice);
                 }
 
                 //Scene: Tied
                 if (!Won && Tied)
                 {
-                    if (LastChoice == Choice.Cooperate)
-                    {
-                        return Choice.Defect;
-                    }
-                    if (LastChoice == Choice.Defect)
-                    {
-                        return Choice.Cooperate;
-                    }
+                    return PlayerService.Opposite(RoundResult.RoundChoice);
                 }
 
                 if (Won)
                 {
-                    return LastChoice;
+                    return RoundResult.RoundChoice;
                 }
 
                 //Scene: Won
-                return LastChoice;
+                return RoundResult.RoundChoice;
             }
-            return LastChoice;
+            return RoundResult.RoundChoice;
         }
 
         public override void ProcessResults(Result results, Player otherPlayer, Player thisPlayer)
         {
-            if ((thisPlayer.RoundScore < otherPlayer.RoundScore))
-            {
-                Won = true;
-                RoundsWon++;
-            }
-            else if (thisPlayer.RoundScore == otherPlayer.RoundScore)
-            {
-                Won = false;
-                Tied = true;
-            }
-            else
-            {
-                Won = false;
-                RoundsLost--;
-            }
-            LastChoice = thisPlayer.Choice;
+            RoundResult.GetResults(thisPlayer, otherPlayer);
         }
     }
 }
