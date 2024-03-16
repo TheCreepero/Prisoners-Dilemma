@@ -17,6 +17,7 @@ namespace Random_Console_App.Main.Classes.Players.Tactical_Player
         public int RoundsLost { get; set; }
         public int RoundsWon { get; set; }
         public bool Won { get; set; }
+        public bool Tied { get; set; }
         public Choice LastChoice { get; set; }
 
         public override Choice MakeChoice()
@@ -24,27 +25,96 @@ namespace Random_Console_App.Main.Classes.Players.Tactical_Player
             if (RoundsWon > RoundsLost)
             {
                 //Scene: Lost last round but has still won more than lost
+                if (!Won)
+                {
+                    if (LastChoice == Choice.Cooperate)
+                    {
+                        return Choice.Defect;
+                    }
+                    if (LastChoice == Choice.Defect)
+                    {
+                        return Choice.Cooperate;
+                    }
+                }
 
                 //Scene: Tied last round and has won more than lost
-
+                if (!Won && Tied)
+                {
+                    return LastChoice;
+                }
+                
                 //Scene: Won last round and has won more than lost
-                return LastChoice;
+                if (Won)
+                {
+                    return LastChoice;
+                }
             }
             else if (RoundsWon < RoundsLost)
             {
                 //Scene: Lost
+                if (!Won)
+                {
+                    if (LastChoice == Choice.Cooperate)
+                    {
+                        return Choice.Defect;
+                    }
+                    if (LastChoice == Choice.Defect)
+                    {
+                        return Choice.Cooperate;
+                    }
+                }
 
                 //Scene: Tied
+                if (!Won && Tied)
+                {
+                    if (LastChoice == Choice.Cooperate)
+                    {
+                        return Choice.Defect;
+                    }
+                    if (LastChoice == Choice.Defect)
+                    {
+                        return Choice.Cooperate;
+                    }
+                }
 
                 //Scene: Won
+                return LastChoice;
             }
             else if (RoundsLost == RoundsWon)
             {
                 //Scene: Lost
+                if (!Won)
+                {
+                    if (LastChoice == Choice.Cooperate)
+                    {
+                        return Choice.Defect;
+                    }
+                    if (LastChoice == Choice.Defect)
+                    {
+                        return Choice.Cooperate;
+                    }
+                }
 
                 //Scene: Tied
+                if (!Won && Tied)
+                {
+                    if (LastChoice == Choice.Cooperate)
+                    {
+                        return Choice.Defect;
+                    }
+                    if (LastChoice == Choice.Defect)
+                    {
+                        return Choice.Cooperate;
+                    }
+                }
+
+                if (Won)
+                {
+                    return LastChoice;
+                }
 
                 //Scene: Won
+                return LastChoice;
             }
             return LastChoice;
         }
@@ -55,6 +125,11 @@ namespace Random_Console_App.Main.Classes.Players.Tactical_Player
             {
                 Won = true;
                 RoundsWon++;
+            }
+            else if (thisPlayer.RoundScore == otherPlayer.RoundScore)
+            {
+                Won = false;
+                Tied = true;
             }
             else
             {
