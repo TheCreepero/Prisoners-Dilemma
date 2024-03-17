@@ -4,12 +4,15 @@ namespace Random_Console_App.Main.Classes
 {
     public abstract class Player
     {
+        protected Player()
+        {
+            RoundResult = new RoundResult();
+        }
+
         public string PlayerName { get; set; }
         public Choice Choice { get; set; }
 
         public RoundResult RoundResult { get; set; }
-
-        public int RoundScore { get; set; }
 
         public abstract Choice MakeChoice();
 

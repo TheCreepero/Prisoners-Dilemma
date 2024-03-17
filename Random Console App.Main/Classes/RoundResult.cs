@@ -10,6 +10,16 @@ namespace Random_Console_App.Main.Classes
 {
     public class RoundResult
     {
+        public RoundResult()
+        {
+            Won = false;
+            Tied = false;
+            Score = 0;
+            RoundChoice = Choice.Cooperate;
+            RoundsWon = 0;
+            RoundsLost = 0;
+        }
+
         public bool Won { get; set; }
         public bool Tied { get; set; }
         public int Score { get; set; }
@@ -17,14 +27,14 @@ namespace Random_Console_App.Main.Classes
         public int RoundsWon { get; set; }
         public int RoundsLost { get; set; }
 
-        public void GetResults(Player thisPlayer, Player otherPlayer) 
+        public void GetResults(Player thisPlayer, Player otherPlayer)
         {
-            if ((thisPlayer.RoundScore < otherPlayer.RoundScore))
+            if ((thisPlayer.RoundResult.Score < otherPlayer.RoundResult.Score))
             {
                 Won = true;
                 RoundsWon++;
             }
-            else if (thisPlayer.RoundScore == otherPlayer.RoundScore)
+            else if (thisPlayer.RoundResult.Score == otherPlayer.RoundResult.Score)
             {
                 Won = false;
                 Tied = true;

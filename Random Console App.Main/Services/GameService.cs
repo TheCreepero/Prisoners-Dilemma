@@ -114,8 +114,8 @@ namespace Random_Console_App.Main.Services
             Result roundResult = new Result(roundNumber, player1.Choice, player2.Choice);
             roundResult.CalculateScore();
 
-            player1.RoundScore = roundResult.Player1Score;
-            player2.RoundScore = roundResult.Player2Score;
+            player1.RoundResult.Score = roundResult.Player1Score;
+            player2.RoundResult.Score = roundResult.Player2Score;
 
             return roundResult;
         }

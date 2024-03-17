@@ -26,11 +26,12 @@ namespace Random_Console_App.Main.Classes.Players
 
         public override void ProcessResults(Result results, Player otherPlayer, Player thisPlayer)
         {
-            if ((thisPlayer.RoundScore < otherPlayer.RoundScore) || (thisPlayer.RoundScore == 2 && otherPlayer.RoundScore == 2))
+            RoundResult.GetResults(thisPlayer, otherPlayer);
+            if ((thisPlayer.RoundResult.Score < otherPlayer.RoundResult.Score) || (thisPlayer.RoundResult.Score == 2 && otherPlayer.RoundResult.Score == 2))
             {
                 Won = true;
             }
-            else if (thisPlayer.RoundScore == 3 && otherPlayer.RoundScore == 3)
+            else if (thisPlayer.RoundResult.Score == 3 && otherPlayer.RoundResult.Score == 3)
             {
                 Won = false;
             }
